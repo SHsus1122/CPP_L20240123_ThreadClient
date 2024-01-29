@@ -15,6 +15,7 @@ unsigned WINAPI SendThread(void* Arg)
 
 	while (true)
 	{
+		// getline 은 띄어쓰기 인식
 		std::cin.getline(Message, sizeof(Message));
 
 		int SendLength = send(ServerSocket, Message, (int)strlen(Message), 0);
@@ -23,6 +24,8 @@ unsigned WINAPI SendThread(void* Arg)
 	return 0;
 }
 
+// Blocking 함수의 역할을 합니다.
+// Recv 즉, 이미 사용중이라면 해당 스레드의 작업이 끝날때까지 기다려야 하기 때문입니다.
 unsigned WINAPI RecvThread(void* Arg)
 {
 	char Buffer[1024] = { 0, };
@@ -46,7 +49,7 @@ int main()
 
 	SOCKADDR_IN ServerSockAddr = { 0 , };
 	ServerSockAddr.sin_family = AF_INET;
-	ServerSockAddr.sin_addr.s_addr = inet_addr("192.168.3.0");
+	ServerSockAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 	ServerSockAddr.sin_port = htons(22222);
 
 	connect(ServerSocket, (SOCKADDR*)&ServerSockAddr, sizeof(ServerSockAddr));
