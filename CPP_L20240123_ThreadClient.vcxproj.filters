@@ -18,5 +18,14 @@
     <ClCompile Include="ThreadClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ThreadClient2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Packet.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadClient3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

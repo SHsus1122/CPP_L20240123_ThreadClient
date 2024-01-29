@@ -32,15 +32,13 @@ public:
 class PacketManager
 {
 public:
-	unsigned short Size = 0;
-	EPacketType Type;
-	Player PlayerData;
-	
-	char Buffer[1024];
+	static unsigned short Size;
+	static EPacketType Type;
+	static Player PlayerData;
 
-	void MakeData()
+	void static MakePacket(char* Buffer)
 	{
-		// 자료를 만드는 형태는 아래와 같습니다. [] -> 1바이트
+		// 자료를 만드는 형태는 아래와 같습니다. [] -> 1바이트 , 우리는 배열에 쪼개서 넣은 것(형태) 처럼 만들었습니다.
 		// Size Type ID       X        Y
 		// [][] [][] [][][][] [][][][] [][][][]
 		// htons 를 사용한 이유는 Size 의 순서가 뒤바뀌면 결과값이 바뀌기 때문
@@ -51,15 +49,21 @@ public:
 		memcpy(&Buffer[2], &Data, 2);			// 2바이트 짜리 만들어서 Buffer 에 넣기
 
 		int Data2 = htons(PlayerData.ID);		// Player ID
-		memcpy(&Buffer[4], &Data, 4);			// 4바이트 짜리 만들어서 Buffer 에 넣기
+		memcpy(&Buffer[4], &Data2, 4);			// 4바이트 짜리 만들어서 Buffer 에 넣기
 
 		Data2 = htons(PlayerData.X);			// Player X 좌표
-		memcpy(&Buffer[8], &Data, 4);			// 4바이트 짜리 만들어서 Buffer 에 넣기
+		memcpy(&Buffer[8], &Data2, 4);			// 4바이트 짜리 만들어서 Buffer 에 넣기
 
 		Data2 = htons(PlayerData.Y);			// Player Y 좌표
-		memcpy(&Buffer[12], &Data, 4);			// 4바이트 짜리 만들어서 Buffer 에 넣기
+		memcpy(&Buffer[12], &Data2, 4);			// 4바이트 짜리 만들어서 Buffer 에 넣기
 	}
 };
+
+
+// static 사용으로 인한 기본값 초기화 작업
+unsigned short PacketManager::Size = 0;
+Player PacketManager::PlayerData = { 0, };
+EPacketType PacketManager::Type = EPacketType::C2S_Login;
 
 
 #endif // __PACKET_H__
